@@ -65,14 +65,14 @@ class _CounterPageState extends State<CounterPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
-                onPressed: () => bloc.add(CounterIncrement()),
+                onPressed: () => bloc.increment(),
                 child: Text(
                   '+',
                   style: AppFonts.titleLarge(),
                 ),
               ),
               TextButton(
-                onPressed: () => bloc.add(CounterDecrement()),
+                onPressed: () => bloc.decrement(),
                 child: Text(
                   '-',
                   style: AppFonts.titleLarge(),

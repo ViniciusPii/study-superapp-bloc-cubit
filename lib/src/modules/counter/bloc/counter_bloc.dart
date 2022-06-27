@@ -1,15 +1,11 @@
 import 'package:bloc/bloc.dart';
 
-part 'counter_event.dart';
 part 'counter_state.dart';
 
-class CounterBloc extends Bloc<CounterEvent, CounterState> {
-  CounterBloc() : super(CounterInitial()) {
-    on<CounterIncrement>(_increment);
-    on<CounterDecrement>(_decrement);
-  }
+class CounterBloc extends Cubit<CounterState> {
+  CounterBloc() : super(CounterInitial());
 
-  void _increment(CounterIncrement event, Emitter<CounterState> emit) async {
+  void increment() async {
     emit(CounterLoading(counter: state.counter));
 
     await Future.delayed(const Duration(milliseconds: 800));
@@ -17,7 +13,7 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
     emit(CounterSuccess(counter: state.counter + 1));
   }
 
-  void _decrement(CounterDecrement event, Emitter<CounterState> emit) async {
+  void decrement() async {
     if (state.counter > 0) {
       emit(CounterLoading(counter: state.counter));
 

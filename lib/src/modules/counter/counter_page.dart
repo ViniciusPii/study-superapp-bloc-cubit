@@ -34,7 +34,7 @@ class _CounterPageState extends State<CounterPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: color,
-        title: const Text('Contador'),
+        title: const Text('Contador Bloc'),
       ),
       body: Center(
         child: Column(

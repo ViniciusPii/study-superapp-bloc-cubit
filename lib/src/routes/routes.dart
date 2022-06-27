@@ -1,3 +1,5 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:superapp/src/modules/counter/bloc/counter_bloc.dart';
 import 'package:superapp/src/modules/counter/counter_page.dart';
 import 'package:superapp/src/modules/home/home_page.dart';
 
@@ -7,6 +9,9 @@ class Routes {
 
   final routes = {
     home: (context) => const HomePage(),
-    counter: (context) => const CounterPage(),
+    counter: (context) => BlocProvider(
+          create: (context) => CounterBloc(),
+          child: const CounterPage(),
+        ),
   };
 }

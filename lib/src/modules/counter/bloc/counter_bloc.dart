@@ -1,47 +1,29 @@
-import 'dart:async';
+import 'package:bloc/bloc.dart';
 
 part 'counter_event.dart';
 part 'counter_state.dart';
 
-class CounterBloc {
-  CounterBloc() {
-    _counterControllerEvent.stream.listen(_mapEvent);
+class CounterBloc extends Bloc<CounterEvent, CounterState> {
+  CounterBloc() : super(CounterInitial()) {
+    on<CounterIncrement>(_increment);
+    on<CounterDecrement>(_decrement);
   }
 
-  final _counterControllerEvent = StreamController<CounterEvent>();
-  final _counterControllerState = StreamController<CounterState>.broadcast();
-
-  Sink<CounterEvent> get counterEvent => _counterControllerEvent.sink;
-  Stream<CounterState> get counterStateStream => _counterControllerState.stream;
-
-  int _counter = 0;
-
-  _mapEvent(CounterEvent event) async {
-    _counterControllerState.add(CounterLoading(counter: _counter));
+  void _increment(CounterIncrement event, Emitter<CounterState> emit) async {
+    emit(CounterLoading(counter: state.counter));
 
     await Future.delayed(const Duration(milliseconds: 800));
 
-    if (event is CounterIncrement) {
-      _increment();
-    } else if (event is CounterDecrement) {
-      _decrement();
+    emit(CounterSuccess(counter: state.counter + 1));
+  }
+
+  void _decrement(CounterDecrement event, Emitter<CounterState> emit) async {
+    if (state.counter > 0) {
+      emit(CounterLoading(counter: state.counter));
+
+      await Future.delayed(const Duration(milliseconds: 800));
+
+      emit(CounterSuccess(counter: state.counter - 1));
     }
-
-    _counterControllerState.add(CounterSuccess(counter: _counter));
-  }
-
-  _increment() {
-    _counter++;
-  }
-
-  _decrement() {
-    if (_counter > 0) {
-      _counter--;
-    }
-  }
-
-  void dispose() {
-    _counterControllerEvent.close();
-    _counterControllerState.close();
   }
 }

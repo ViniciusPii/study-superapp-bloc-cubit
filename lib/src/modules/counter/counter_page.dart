@@ -1,25 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:superapp/src/core/theme/app_dimension.dart';
 import 'package:superapp/src/core/theme/app_fonts.dart';
 import 'package:superapp/src/core/utils/utils.dart';
-import 'package:superapp/src/modules/counter/bloc/counter_bloc.dart';
+import 'package:superapp/src/modules/counter/counter_controller.dart';
 
-class CounterPage extends StatefulWidget {
+class CounterPage extends GetView<CounterController> {
   const CounterPage({Key? key}) : super(key: key);
-
-  @override
-  State<CounterPage> createState() => _CounterPageState();
-}
-
-class _CounterPageState extends State<CounterPage> {
-  late final CounterBloc bloc;
-
-  @override
-  void initState() {
-    bloc = context.read<CounterBloc>();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,45 +33,41 @@ class _CounterPageState extends State<CounterPage> {
   }
 
   Widget _buildCounter() {
-    return BlocBuilder<CounterBloc, CounterState>(
-      builder: (context, state) {
-        return Text(
-          'Contador ${state.counter}',
-          style: AppFonts.titleLarge(),
-        );
-      },
+    return Obx(
+      () => Text(
+        'Contador ${controller.counter}',
+        style: AppFonts.titleLarge(),
+      ),
     );
   }
 
   Widget _buildButtons(Color color) {
-    return BlocBuilder<CounterBloc, CounterState>(
-      builder: (context, state) {
-        return Visibility(
-          visible: state is CounterLoading,
-          replacement: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextButton(
-                onPressed: () => bloc.increment(),
-                child: Text(
-                  '+',
-                  style: AppFonts.titleLarge(),
-                ),
+    return Obx(
+      () => Visibility(
+        visible: controller.loading,
+        replacement: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: () => controller.increment(),
+              child: Text(
+                '+',
+                style: AppFonts.titleLarge(),
               ),
-              TextButton(
-                onPressed: () => bloc.decrement(),
-                child: Text(
-                  '-',
-                  style: AppFonts.titleLarge(),
-                ),
+            ),
+            TextButton(
+              onPressed: () => controller.decrement(),
+              child: Text(
+                '-',
+                style: AppFonts.titleLarge(),
               ),
-            ],
-          ),
-          child: CircularProgressIndicator(
-            color: color,
-          ),
-        );
-      },
+            ),
+          ],
+        ),
+        child: CircularProgressIndicator(
+          color: color,
+        ),
+      ),
     );
   }
 }

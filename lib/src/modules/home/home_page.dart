@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:superapp/src/core/components/card_component.dart';
 import 'package:superapp/src/core/components/status_bar_component.dart';
 import 'package:superapp/src/core/theme/app_colors.dart';
 import 'package:superapp/src/core/theme/app_dimension.dart';
 import 'package:superapp/src/core/theme/app_extension.dart';
 import 'package:superapp/src/core/theme/app_fonts.dart';
-import 'package:superapp/src/routes/routes.dart';
 
-class HomePage extends StatelessWidget {
+import 'home_controller.dart';
+
+class HomePage extends GetView<HomeController> {
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -42,8 +44,8 @@ class HomePage extends StatelessWidget {
           title: 'Contador',
           color: AppColors.blue800,
           description: 'App que incrementa e decrementa um contador!',
-          func: () => Navigator.of(context).pushNamed(
-            Routes.counter,
+          func: () => Get.toNamed(
+            '/counter',
             arguments: AppColors.blue800,
           ),
         )

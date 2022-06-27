@@ -46,7 +46,16 @@ class HomePage extends StatelessWidget {
             Routes.counter,
             arguments: AppColors.blue800,
           ),
-        )
+        ),
+        CardComponent(
+          title: 'Imc',
+          color: AppColors.blue700,
+          description: 'Calculadora simples de imc!',
+          func: () => Navigator.of(context).pushNamed(
+            Routes.imc,
+            arguments: AppColors.blue700,
+          ),
+        ),
       ],
     );
   }

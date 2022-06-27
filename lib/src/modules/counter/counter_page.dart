@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:superapp/src/core/theme/app_dimension.dart';
 import 'package:superapp/src/core/theme/app_fonts.dart';
 import 'package:superapp/src/core/utils/utils.dart';
@@ -17,14 +17,8 @@ class _CounterPageState extends State<CounterPage> {
 
   @override
   void initState() {
-    bloc = GetIt.I();
+    bloc = context.read<CounterBloc>();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    bloc.dispose();
-    super.dispose();
   }
 
   @override
@@ -52,12 +46,10 @@ class _CounterPageState extends State<CounterPage> {
   }
 
   Widget _buildCounter() {
-    return StreamBuilder<CounterState>(
-      stream: bloc.counterStateStream,
-      initialData: CounterInitial(),
-      builder: (context, snapshot) {
+    return BlocBuilder<CounterBloc, CounterState>(
+      builder: (context, state) {
         return Text(
-          'Contador ${snapshot.data!.counter}',
+          'Contador ${state.counter}',
           style: AppFonts.titleLarge(),
         );
       },
@@ -65,23 +57,22 @@ class _CounterPageState extends State<CounterPage> {
   }
 
   Widget _buildButtons(Color color) {
-    return StreamBuilder<CounterState>(
-      stream: bloc.counterStateStream,
-      builder: (context, snapshot) {
+    return BlocBuilder<CounterBloc, CounterState>(
+      builder: (context, state) {
         return Visibility(
-          visible: snapshot.data is CounterLoading,
+          visible: state is CounterLoading,
           replacement: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
-                onPressed: () => bloc.counterEvent.add(CounterIncrement()),
+                onPressed: () => bloc.add(CounterIncrement()),
                 child: Text(
                   '+',
                   style: AppFonts.titleLarge(),
                 ),
               ),
               TextButton(
-                onPressed: () => bloc.counterEvent.add(CounterDecrement()),
+                onPressed: () => bloc.add(CounterDecrement()),
                 child: Text(
                   '-',
                   style: AppFonts.titleLarge(),

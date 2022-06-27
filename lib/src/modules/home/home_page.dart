@@ -5,6 +5,7 @@ import 'package:superapp/src/core/theme/app_colors.dart';
 import 'package:superapp/src/core/theme/app_dimension.dart';
 import 'package:superapp/src/core/theme/app_extension.dart';
 import 'package:superapp/src/core/theme/app_fonts.dart';
+import 'package:superapp/src/routes/routes.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -25,21 +26,28 @@ class HomePage extends StatelessWidget {
                 const SizedBox(
                   height: AppDimension.size_2,
                 ),
-                Column(
-                  children: [
-                    CardComponent(
-                      func: () {},
-                      title: 'Contador',
-                      color: AppColors.blue800,
-                      description: 'App que incrementa e decrementa um contador!',
-                    )
-                  ],
-                )
+                _buildCards(context),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildCards(BuildContext context) {
+    return Column(
+      children: [
+        CardComponent(
+          title: 'Contador',
+          color: AppColors.blue800,
+          description: 'App que incrementa e decrementa um contador!',
+          func: () => Navigator.of(context).pushNamed(
+            Routes.counter,
+            arguments: AppColors.blue800,
+          ),
+        )
+      ],
     );
   }
 

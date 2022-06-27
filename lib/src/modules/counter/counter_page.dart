@@ -15,7 +15,7 @@ class CounterPage extends GetView<CounterController> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: color,
-        title: const Text('Contador'),
+        title: const Text('Contador Getx'),
       ),
       body: Center(
         child: Column(
